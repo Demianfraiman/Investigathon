@@ -1,155 +1,142 @@
-Graph Path-likeness ≤ 2 Recognition – Investigathon 2025
-📌 Competition Context
-This project was developed for Investigathon 2025, a two-week intensive research competition in graph theory. Our team tackled the problem of recognizing graphs that admit specific vertex orderings with limited colorings while avoiding forbidden patterns.
+# Graph Path-likeness ≤ 2 Recognition  
+### Investigathon 2025
 
-🎯 Problem Statement
-Given a graph G, determine whether there exists:
+This repository documents the theoretical and algorithmic results developed for
+**Investigathon 2025**, a two-week intensive research competition in graph theory.
 
-A vertex ordering <
+The project studies a graph recognition problem based on **vertex orderings,
+2-colorings, and forbidden patterns**, leading to a complete structural
+characterization of the admissible graphs and a linear-time recognition
+strategy.
 
-A 2-coloring of vertices
-Such that the pair avoids two specific forbidden colored patterns:
+---
 
-Pattern (i): E = {(1,3)}, N = ∅, C = {1,2}
+## 📌 Competition Context
 
-Pattern (ii): E = {(1,3)}, N = ∅, C = {2,3}
+**Investigathon 2025** is a short, high-intensity research competition where
+teams address open theoretical problems under time constraints.
 
-Where the patterns represent constraints on triples of vertices in the ordering, with colored vertices requiring the same color.
+Our team focused on recognizing graphs that admit a vertex ordering and a
+2-coloring avoiding specific forbidden colored patterns on triples of vertices.
 
-🧠 Our Theoretical Framework
-We introduced the concept of "caminitud" (path-likeness) to characterize admissible graphs:
+---
 
-Key Characterization Theorem
-A graph has caminitud ≤ 2 if and only if for every edge (u,v), either:
+## 🎯 Problem Statement
 
-u and v are consecutive in the global ordering, OR
+Given a graph \( G \), determine whether there exist:
 
-u and v have the same color AND are consecutive in the ordering restricted to that color
+- a vertex ordering \( < \),
+- a 2-coloring of the vertices,
 
-Structural Properties Discovered
-Planarity: All caminitud ≤ 2 graphs are planar
+such that the pair avoids the following forbidden colored patterns:
 
-Degree Bound: Maximum degree ≤ 4
+- **Pattern (i)**:  
+  an edge between positions 1 and 3, with vertices 1 and 2 forced to have the
+  same color;
 
-Cycle Structure: Graphs decompose into a linear chain of induced cycles
+- **Pattern (ii)**:  
+  an edge between positions 1 and 3, with vertices 2 and 3 forced to have the
+  same color.
 
-Cycle Space: Induced cycles form an 𝔽₂-basis for the cycle space H₁(G,𝔽₂)
+These patterns impose local constraints on ordered triples of vertices that
+translate into global structural restrictions on the graph.
 
-🏗️ Graph Structure Characterization
-Core Components
-Induced Cycles: Form a basis of the cycle space
+---
 
-Cycle Hypergraph: Must be a simple path
+## 🧠 Theoretical Framework: *Caminitud* (Path-likeness)
 
-Connection Constraints:
+To analyze the problem, we introduced the notion of **caminitud**
+(*path-likeness*), a measure of how close a graph is to a simple path under the
+allowed ordering and coloring constraints.
 
-Cycles share at most one edge
+### Key Characterization
 
-Triangle constraints for certain connections
+A graph has **caminitud ≤ 2** if and only if for every edge \( (u,v) \):
 
-Tree attachments follow specific rules
+- either \( u \) and \( v \) are consecutive in the global vertex ordering, or
+- \( u \) and \( v \) share the same color and are consecutive in the ordering
+  restricted to that color.
 
-Attachment Rules
-Internal cycle nodes: No tree attachments allowed
+This characterization provides a simple local condition that completely
+determines admissibility.
 
-External cycle nodes: Limited tree attachments (at most one per side)
+---
 
-Connection nodes: Strict restrictions based on connection type
+## 🔍 Structural Properties
 
-Path connections: Allow specific branching patterns
+Graphs with caminitud ≤ 2 satisfy strong global constraints:
 
-⚡ Algorithm Design
-We developed a linear-time O(n+m) recognition algorithm:
+- **Planarity**: every such graph is planar;
+- **Degree bound**: the maximum degree is at most 4;
+- **Cycle structure**: the graph decomposes into a linear chain of induced cycles;
+- **Cycle space**: induced cycles form an \( \mathbb{F}_2 \)-basis of
+  \( H_1(G,\mathbb{F}_2) \).
 
-Algorithm Steps
-text
-1. Decompose graph into connected components
-2. For each component:
-   a. If no cycles: Check tree conditions
-   b. Find all induced cycles
-   c. Verify cycles form an 𝔽₂-basis
-   d. Construct cycle hypergraph
-   e. Check hypergraph is a path
-   f. Validate all connection conditions
-   g. Construct valid ordering and coloring if exists
-3. Return recognition result with certificate
-Key Features
-Certifying: Provides counterexample when false
+These properties rule out complex interactions between cycles and impose a
+nearly path-like global structure.
 
-Linear Complexity: O(n+m) time and space
+---
 
-Constructive: Builds valid ordering and coloring when possible
+## 🏗️ Structural Characterization
 
-🔬 Implementation Approach
-Cycle Detection
-Use modified DFS to find induced cycles
+The admissible graphs admit a precise structural description:
 
-Maintain cycle space basis over 𝔽₂
+- **Induced cycles** act as the fundamental building blocks;
+- The **cycle hypergraph**, whose nodes are induced cycles and whose edges
+  represent their connections, must form a simple path;
+- Distinct cycles share at most one edge and only under strict conditions;
+- Trees may be attached only at specific vertices and in a controlled manner.
 
-Hypergraph Construction
-Vertices: Induced cycles
+This description allows the global structure of the graph to be recovered from
+local constraints.
 
-Edges: Cycle connections (shared edges, hinge nodes, or connecting paths)
+---
 
-Validation Checks
-Basis verification in cycle space
+## 🎨 Coloring and Ordering Principles
 
-Path structure in hypergraph
+The admissible ordering and 2-coloring follow systematic rules:
 
-Attachment condition compliance
+- vertices at the ends of the global ordering share the same color;
+- paths between same-colored vertices preserve color consistency;
+- connection vertices impose color alternation constraints;
+- tree attachments must respect degree and ordering restrictions.
 
-Coloring consistency
+These rules ensure consistency with the forbidden pattern constraints.
 
-📊 Complexity Analysis
-Time Complexity: O(|V| + |E|)
+---
 
-Space Complexity: O(|V| + |E|)
+## 📊 Algorithmic Consequences
 
-Basis Computation: Linear via Gaussian elimination over 𝔽₂
+The structural characterization leads directly to:
 
-Hypergraph Operations: Linear traversal
+- a **cuadratic-time recognition strategy**;
+- a **certifying procedure**, providing explicit obstructions when the graph is
+  not admissible;
+- a **constructive method** to build a valid ordering and coloring when one
+  exists.
 
-🎨 Coloring and Ordering Construction
-We developed systematic rules for constructing valid 2-colorings and orderings:
+---
 
-Coloring Rules
-Start/end vertices same color
+## 📈 Extensions and Future Work
 
-Path between same-colored vertices maintains color
+Potential directions for further research include:
 
-Tree attachments follow degree-3 node paths
+- recognition with more than two colors;
+- optimization variants minimizing the number of colors;
+- applications to graph drawing and constrained layouts;
+- complete classification of admissible graphs for broader pattern sets.
 
-Connection nodes follow opposite color rules
+---
 
-Ordering Rules
-Follow hypergraph path order
+## 👥 Team & Acknowledgments
 
-Respect connection constraints
+- **Team**: *Matching Perfecto*  
+- **Members**: Noelia Falczuk, Demián Fraiman  
+- **Competition**: Investigathon 2025  
+- **Date**: December 10, 2025
 
-Handle edge-sharing cycles specially
+---
 
-Append tree attachments appropriately
+This repository focuses on the **conceptual and theoretical contribution** of
+the project. Implementation details are intentionally omitted.
 
-🧪 Testing Methodology
-Verified on known admissible/non-admissible graphs
-
-Tested edge cases: cycles, trees, combinations
-
-Validated against brute-force for small graphs
-
-Ensured planarity and degree bounds
-
-📈 Extensions and Future Work
-Generalization: k-coloring recognition
-
-Optimization: Minimum coloring algorithm
-
-Applications: Graph drawing, scheduling
-
-Theoretical: Complete characterization of admissible graphs
-
-👥 Team & Acknowledgments
-Team: Matching Perfecto
-Members: Noelia Falczuk, Demián Fraiman
-Competition: Investigathon 2025
-Date: December 10, 2025
